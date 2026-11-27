@@ -1,0 +1,18 @@
+{
+  "name": "smartchallan-project",
+  "version": "1.0.0",
+  "description": "SmartChallan - Traffic Violation & Smart Challan Management System",
+  "scripts": {
+    "setup": "node backend/src/scripts/setupDb.js",
+    "test": "node backend/src/scripts/runTests.js",
+    "server": "node backend/src/server.js",
+    "backend": "node --watch backend/src/server.js",
+    "frontend": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build"
+  },
+  "dependencies": {
+    "dotenv": "^18.0.10",
+    "mongoose": "^9.13.0",
+    "mysql2": "^3.24.6"
+  }
+}

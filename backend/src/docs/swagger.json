@@ -1,0 +1,149 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "SmartChallan - Traffic Violation & Smart Challan Management System API",
+    "version": "1.0.0",
+    "description": "Production-grade RESTful API powered by MySQL 8 Stored Procedures and MongoDB Evidence Aggregations."
+  },
+  "servers": [
+    { "url": "/api/v1", "description": "Local API v1 Server" }
+  ],
+  "components": {
+    "securitySchemes": {
+      "cookieAuth": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "access_token"
+      },
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "summary": "User Authentication (RBAC)",
+        "description": "Authenticates user against app_user table with bcrypt password verification.",
+        "responses": { "200": { "description": "Login successful" } }
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "summary": "Get authenticated user profile",
+        "security": [{ "bearerAuth": [] }, { "cookieAuth": [] }],
+        "responses": { "200": { "description": "Current user profile" } }
+      }
+    },
+    "/citizens/search": {
+      "get": {
+        "summary": "Public Challan Search",
+        "description": "Search by vehicle registration number or challan number.",
+        "responses": { "200": { "description": "Matching challan records" } }
+      }
+    },
+    "/citizens/challan/{challanId}": {
+      "get": {
+        "summary": "Full Challan Details & Lifecycle Timeline",
+        "responses": { "200": { "description": "Detailed challan with timeline & evidence" } }
+      }
+    },
+    "/citizens/pay": {
+      "post": {
+        "summary": "Citizen Online Payment",
+        "description": "Settles challan via stored procedure sp_process_payment.",
+        "responses": { "200": { "description": "Payment completed" } }
+      }
+    },
+    "/citizens/appeal": {
+      "post": {
+        "summary": "File Grievance / Appeal",
+        "description": "Registers appeal via stored procedure sp_file_appeal within 15-day window.",
+        "responses": { "200": { "description": "Appeal filed" } }
+      }
+    },
+    "/citizens/receipt/{challanId}/pdf": {
+      "get": {
+        "summary": "Download Official PDF Payment Receipt",
+        "responses": { "200": { "description": "PDF binary stream" } }
+      }
+    },
+    "/officers/vehicles/search": {
+      "get": {
+        "summary": "Officer Vehicle & License Risk Warning Autocomplete",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "Vehicle lookup with license status alerts" } }
+      }
+    },
+    "/officers/violations": {
+      "post": {
+        "summary": "Record Violation & Upload Evidence (Multer + Mongo + MySQL)",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "201": { "description": "Violation logged" } }
+      }
+    },
+    "/officers/generate-challan": {
+      "post": {
+        "summary": "Generate Challan via sp_generate_challan",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "Challan generated" } }
+      }
+    },
+    "/payments/outstanding": {
+      "get": {
+        "summary": "View Outstanding Challans",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "Outstanding list" } }
+      }
+    },
+    "/payments/apply-late-fees": {
+      "post": {
+        "summary": "Batch Apply Late Fees via sp_apply_late_fees",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "Late fees updated" } }
+      }
+    },
+    "/appeals/queue": {
+      "get": {
+        "summary": "Pending Appeals Queue",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "Appeals queue" } }
+      }
+    },
+    "/appeals/{appealId}/decide": {
+      "post": {
+        "summary": "Decide Appeal via sp_decide_appeal (ACCEPTED/REJECTED)",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "Decision recorded" } }
+      }
+    },
+    "/analytics/kpis": {
+      "get": {
+        "summary": "Management KPI Summary Cards",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "KPI metrics" } }
+      }
+    },
+    "/analytics/hotspots": {
+      "get": {
+        "summary": "Hotspots for Leaflet Heatmap / Marker Plotting",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "Locations with violation counts" } }
+      }
+    },
+    "/demo/transaction": {
+      "post": {
+        "summary": "DBMS Viva: Atomic Multi-Step Transaction (Commit vs Rollback)",
+        "responses": { "200": { "description": "Before/After state snapshot" } }
+      }
+    },
+    "/demo/concurrency": {
+      "post": {
+        "summary": "DBMS Viva: Double Payment Race Condition Demo",
+        "responses": { "200": { "description": "One succeeded, one rejected" } }
+      }
+    }
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "info": {
+    "name": "SmartChallan API Collection",
+    "description": "Postman collection for SmartChallan Traffic Violation & Smart Challan Management System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login - Officer",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"username\": \"officer_vikram\",\n  \"password\": \"password123\"\n}" },
+            "url": { "raw": "http://localhost:5000/api/v1/auth/login", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "v1", "auth", "login"] }
+          }
+        },
+        {
+          "name": "Login - Payment Admin",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"username\": \"payment_admin\",\n  \"password\": \"password123\"\n}" },
+            "url": { "raw": "http://localhost:5000/api/v1/auth/login", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "v1", "auth", "login"] }
+          }
+        },
+        {
+          "name": "Get Current User Profile",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:5000/api/v1/auth/me", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "v1", "auth", "me"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Citizen Portal",
+      "item": [
+        {
+          "name": "Search Challans by Vehicle Reg",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:5000/api/v1/citizens/search?q=DL01AB1234", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "v1", "citizens", "search"], "query": [{ "key": "q", "value": "DL01AB1234" }] }
+          }
+        },
+        {
+          "name": "Get Challan Details & Timeline",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:5000/api/v1/citizens/challan/1", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "v1", "citizens", "challan", "1"] }
+          }
+        },
+        {
+          "name": "Citizen Pay Challan Online",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"challanId\": 4,\n  \"amount\": 5000,\n  \"paymentMethod\": \"UPI\",\n  \"transactionReference\": \"TXN-UPI-DEMO-001\"\n}" },
+            "url": { "raw": "http://localhost:5000/api/v1/citizens/pay", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "v1", "citizens", "pay"] }
+          }
+        },
+        {
+          "name": "Citizen File Appeal",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"challanId\": 5,\n  \"reason\": \"Medical emergency: Was transporting patient to urgent care hospital.\"\n}" },
+            "url": { "raw": "http://localhost:5000/api/v1/citizens/appeal", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "v1", "citizens", "appeal"] }
+          }
+        },
+        {
+          "name": "Download PDF Receipt",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:5000/api/v1/citizens/receipt/2/pdf", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "v1", "citizens", "receipt", "2", "pdf"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "DBMS Viva Demo",
+      "item": [
+        {
+          "name": "Atomic Transaction Commit",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"simulateFailure\": false\n}" },
+            "url": { "raw": "http://localhost:5000/api/v1/demo/transaction", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "v1", "demo", "transaction"] }
+          }
+        },
+        {
+          "name": "Atomic Transaction Rollback Simulation",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"simulateFailure\": true\n}" },
+            "url": { "raw": "http://localhost:5000/api/v1/demo/transaction", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "v1", "demo", "transaction"] }
+          }
+        },
+        {
+          "name": "Concurrency Race Condition Test",
+          "request": {
+            "method": "POST",
+            "url": { "raw": "http://localhost:5000/api/v1/demo/concurrency", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "v1", "demo", "concurrency"] }
+          }
+        }
+      ]
+    }
+  ]
+}
